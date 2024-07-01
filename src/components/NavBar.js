@@ -11,6 +11,7 @@ const NavBar = () => {
         <NavLink to='/'>
           <Navbar.Brand>
             <img src={logo} alt="logo" height="70" width="70" />
+            <span>Pet It!</span>
           </Navbar.Brand>
         </NavLink>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
