@@ -5,7 +5,9 @@ import { axiosRes } from "../../api/axiosDefaults";
 import styles from "../../styles/ReviewsEditCreateForm.module.css";
 
 function ReviewEditForm(props) {
-  const { id, setShowEditForm, setReviews } = props;
+  const { id, setShowEditForm, setReviews, product_name, 
+    content, setProductName, setContent
+   } = props;
 
   const handleProductName = (event) => {
     setProductName(event.target.value);
