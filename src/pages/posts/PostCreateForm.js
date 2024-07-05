@@ -15,6 +15,7 @@ import { useHistory } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
 import { useRedirect } from "../../hooks/useRedirect";
 
+
 function PostCreateForm() {
   useRedirect("loggedOut");
   const [errors, setErrors] = useState({});
@@ -163,7 +164,10 @@ function PostCreateForm() {
           <Container className={appStyles.Content}>{textFields}</Container>
         </Col>
       </Row>
+      
     </Form>
+    
+  
   );
 }
 
