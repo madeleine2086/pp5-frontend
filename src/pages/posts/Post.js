@@ -1,11 +1,15 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import styles from "../../styles/Post.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
-import { Card, Media, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Card, Media, OverlayTrigger } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import Avatar from "../../components/Avatar";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
+import Tooltip from '@mui/material/Tooltip';
+import ReviewCreateForm from "../reviews/ReviewCreateForm";
+import Reviews from "../reviews/Reviews";
+import { axiosReq } from "../../api/axiosDefaults";
 
 const Post = (props) => {
   const {
@@ -28,6 +32,10 @@ const Post = (props) => {
   const is_owner = currentUser?.username === owner;
 
   const history = useHistory();
+
+  const [reviews, setReviews] = useState({ results: [] });
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [post, setPost] = useState({ results: [] });
 
   const handleEdit = () => {
     history.push(`/posts/${id}/edit`);
@@ -73,6 +81,23 @@ const Post = (props) => {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    const handleMount = async () => {
+      try {
+        const [{ data: post }, { data: reviews }] = await Promise.all([
+          axiosReq.get(`/posts/${id}`),
+          axiosReq.get(`/reviews/?post=${id}`),
+        ]);
+        setPost({ results: [post] });
+        setReviews(reviews);
+      } catch (err) {
+        // console.log(err);
+      }
+    };
+
+    handleMount();
+  }, [id]);
 
   return (
     <Card className={styles.Post}>
@@ -129,7 +154,54 @@ const Post = (props) => {
           </Link>
           {comments_count}
         </div>
+        <div>
+          {reviews.results.length ? (
+            <Tooltip title="Click to view the review" placement="bottom" arrow>
+              <div
+                className={styles.Reviews}
+                onClick={() => setReviewOpen(!reviewOpen)}
+              >
+              
+                See Review
+              </div>
+            </Tooltip>
+          ) : is_owner && currentUser && reviews.results.length === 0 ? (
+            <Tooltip title="Click to add a review" placement="bottom" arrow>
+              <div
+                className={styles.Reviews}
+                onClick={() => setReviewOpen(!reviewOpen)}
+              >
+                
+                Add Review
+              </div>
+            </Tooltip>
+          ) : (
+            <div></div>
+          )}
+        </div>
+
       </Card.Body>
+        {reviewOpen && (
+        <Card.Body>
+          {is_owner && currentUser ? (
+            <ReviewCreateForm
+              profile_id={currentUser.profile_id}
+              post={id}
+              setPost={setPost}
+              setReviews={setReviews}
+            />
+          ) : reviews.results.length ? (
+            <h5>See the review here!</h5>
+          ) : null}
+          {reviews.results.length ? (
+            <Reviews {...reviews.results[0]} setReviews={setReviews} />
+          ) : currentUser ? (
+            <span>No review has been added yet!</span>
+          ) : (
+            <span>No reviews yet</span>
+          )}
+        </Card.Body>
+  )}
     </Card>
   );
 };

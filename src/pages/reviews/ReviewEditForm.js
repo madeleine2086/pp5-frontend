@@ -9,20 +9,23 @@ function ReviewEditForm(props) {
     content, setProductName, setContent
    } = props;
 
+   const [formProductName, setFormProductName] = useState(product_name);
+   const [formContent, setFormContent] = useState(content)
+
   const handleProductName = (event) => {
-    setProductName(event.target.value);
+    setFormProductName(event.target.value);
   };
 
   const handleContent = (event) => {
-    setContent(event.target.value);
+    setFormContent(event.target.value);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await axiosRes.put(`/reviews/${id}/`, {
-        product_name: product_name.trim(),
-        content: content.trim(),
+        product_name: formProductName.trim(),
+        content: formContent.trim(),
       });
       setReviews((prevReviews) => ({
         ...prevReviews,
@@ -30,8 +33,8 @@ function ReviewEditForm(props) {
           return review.id === id
             ? {
                 ...review,
-                product_name: product_name.trim(),
-                content: content.trim(),
+                product_name: formProductName.trim(),
+                content: formContent.trim(),
                 updated_at: "now",
               }
             : review;
@@ -50,9 +53,9 @@ function ReviewEditForm(props) {
           className={styles.Form}
           as="textarea"
           name="product_name"
-          value={product_name}
+          value={formProductName}
           onChange={handleProductName}
-          rows={4}
+          rows={1}
         />
       </Form.Group>
       <FormGroup>
@@ -60,7 +63,7 @@ function ReviewEditForm(props) {
           className={styles.Form}
           as="textarea"
           name="content"
-          value={content}
+          value={formContent}
           onChange={handleContent}
           rows={4}
         />
@@ -75,7 +78,7 @@ function ReviewEditForm(props) {
         </button>
         <button
           className={styles.Button}
-          disabled={!product_name.trim()}
+          disabled={!formProductName.trim()}
           type="submit"
         >
           Save

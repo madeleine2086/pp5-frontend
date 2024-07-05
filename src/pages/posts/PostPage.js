@@ -28,20 +28,18 @@ function PostPage() {
   const is_owner = currentUser?.username === owner;
   const profile_image = currentUser?.profile_image;
   const [comments, setComments] = useState({ results: [] });
-  const [reviews, setReviews] = useState({ results: [] });
+  //const [reviews, setReviews] = useState({ results: [] });
 
   useEffect(() => {
     const handleMount = async () => {
       try {
-        const [{ data: post }, { data: comments }, { data: reviews }] =
+        const [{ data: post }, { data: comments }] =
           await Promise.all([
             axiosReq.get(`/posts/${id}`),
-            axiosReq.get(`/comments/?post=${id}`),
-            axiosReq.get(`/reviews/?post=${id}`),
+            axiosReq.get(`/comments/?post=${id}`),            
           ]);
         setPost({ results: [post] });
         setComments(comments);
-        setReviews(reviews);
       } catch (err) {
         console.log(err);
       }
@@ -54,33 +52,6 @@ function PostPage() {
       <Col className="py-2 p-0 p-lg-2" lg={8}>
         <PopularProfiles mobile />
         <Post {...post.results[0]} setPosts={setPost} postPage />
-
-        <Container className={appStyles.Content}>
-          {currentUser ? (
-            <ReviewCreateForm
-              profile_id={currentUser.profile_id}
-              post={id}
-              setPost={setPost}
-              setReviews={setReviews}
-            />
-          ) : reviews.results.length ? (
-            "Reviews"
-          ) : null}
-          {reviews.results.length ? (
-            reviews.results.map((review) => (
-              <Reviews
-                key={review.id}
-                {...review}
-                setPost={setPost}
-                setReviews={setReviews}
-              />
-            ))
-          ) : currentUser ? (
-            <span>No reviews yet, be the first to add one!</span>
-          ) : (
-            <span>No reviews... yet</span>
-          )}
-        </Container>
 
         <Container className={appStyles.Content}>
           {currentUser ? (

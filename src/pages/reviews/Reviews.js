@@ -10,7 +10,6 @@ const Reviews = (props) => {
   const {
     profile_id,
     owner,
-
     product_name,
     content,
     setReviews,
