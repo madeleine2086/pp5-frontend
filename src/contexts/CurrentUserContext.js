@@ -33,6 +33,7 @@ export const CurrentUserProvider = ({ children }) => {
         } catch (err) {
           setCurrentUser((prevCurrentUser) => {
             if (prevCurrentUser) {
+              // eslint-disable-next-line no-restricted-globals
               history.push("/signin");
             }
             return null;
@@ -55,6 +56,7 @@ export const CurrentUserProvider = ({ children }) => {
           } catch (err) {
             setCurrentUser((prevCurrentUser) => {
               if (prevCurrentUser) {
+                // eslint-disable-next-line no-restricted-globals
                 history.push("/signin");
               }
               return null;
@@ -65,6 +67,7 @@ export const CurrentUserProvider = ({ children }) => {
         return Promise.reject(err);
       }
     );
+    // eslint-disable-next-line no-restricted-globals
   }, [history]);
 
   return (
