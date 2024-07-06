@@ -9,9 +9,6 @@ import { useParams } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
 import Post from "./Post";
 import Comment from "../comments/Comment";
-import Reviews from "../reviews/Reviews";
-import ReviewCreateForm from "../reviews/ReviewCreateForm";
-
 import CommentCreateForm from "../comments/CommentCreateForm";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 
@@ -21,25 +18,25 @@ import { fetchMoreData } from "../../utils/utils";
 import PopularProfiles from "../profiles/PopularProfiles";
 
 function PostPage() {
-  const { id, owner } = useParams();
+  const { id } = useParams();
   const [post, setPost] = useState({ results: [] });
 
   const currentUser = useCurrentUser();
-  const is_owner = currentUser?.username === owner;
+
   const profile_image = currentUser?.profile_image;
   const [comments, setComments] = useState({ results: [] });
-  //const [reviews, setReviews] = useState({ results: [] });
+  
 
   useEffect(() => {
     const handleMount = async () => {
       try {
-        const [{ data: post }, { data: comments }] =
-          await Promise.all([
+        const [{ data: post }, { data: comments }] = await Promise.all([
             axiosReq.get(`/posts/${id}`),
             axiosReq.get(`/comments/?post=${id}`),            
           ]);
         setPost({ results: [post] });
         setComments(comments);
+        console.log(comments);
       } catch (err) {
         console.log(err);
       }
@@ -51,8 +48,8 @@ function PostPage() {
     <Row className="h-100">
       <Col className="py-2 p-0 p-lg-2" lg={8}>
         <PopularProfiles mobile />
-        <Post {...post.results[0]} setPosts={setPost} postPage />
 
+        <Post {...post.results[0]} setPosts={setPost} postPage />
         <Container className={appStyles.Content}>
           {currentUser ? (
             <CommentCreateForm

@@ -6,7 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 import Avatar from "../../components/Avatar";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import ReviewCreateForm from "../reviews/ReviewCreateForm";
 import Reviews from "../reviews/Reviews";
 import { axiosReq } from "../../api/axiosDefaults";
@@ -161,7 +161,6 @@ const Post = (props) => {
                 className={styles.Reviews}
                 onClick={() => setReviewOpen(!reviewOpen)}
               >
-              
                 See Review
               </div>
             </Tooltip>
@@ -171,7 +170,6 @@ const Post = (props) => {
                 className={styles.Reviews}
                 onClick={() => setReviewOpen(!reviewOpen)}
               >
-                
                 Add Review
               </div>
             </Tooltip>
@@ -179,11 +177,10 @@ const Post = (props) => {
             <div></div>
           )}
         </div>
-
       </Card.Body>
-        {reviewOpen && (
+      {reviewOpen && (
         <Card.Body>
-          {is_owner && currentUser ? (
+          {is_owner && currentUser && reviews.results.length === 0 ? (
             <ReviewCreateForm
               profile_id={currentUser.profile_id}
               post={id}
@@ -191,7 +188,7 @@ const Post = (props) => {
               setReviews={setReviews}
             />
           ) : reviews.results.length ? (
-            <h5>See the review here!</h5>
+            <p>Your review:</p>
           ) : null}
           {reviews.results.length ? (
             <Reviews {...reviews.results[0]} setReviews={setReviews} />
@@ -201,7 +198,7 @@ const Post = (props) => {
             <span>No reviews yet</span>
           )}
         </Card.Body>
-  )}
+      )}
     </Card>
   );
 };
