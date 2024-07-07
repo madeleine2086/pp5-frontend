@@ -35,6 +35,7 @@ const Post = (props) => {
 
   const [reviews, setReviews] = useState({ results: [] });
   const [reviewOpen, setReviewOpen] = useState(false);
+  // eslint-disable-next-line
   const [post, setPost] = useState({ results: [] });
 
   const handleEdit = () => {
@@ -128,7 +129,11 @@ const Post = (props) => {
           {is_owner ? (
             <OverlayTrigger
               placement="top"
-              overlay={<Tooltip>You can't like your own post!</Tooltip>}
+              overlay={
+                <Tooltip>
+                  <>You can't like your own post!</>
+                </Tooltip>
+              }
             >
               <i className="far fa-heart" />
             </OverlayTrigger>
