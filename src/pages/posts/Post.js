@@ -11,6 +11,7 @@ import ReviewCreateForm from "../reviews/ReviewCreateForm";
 import Reviews from "../reviews/Reviews";
 import { axiosReq } from "../../api/axiosDefaults";
 
+
 const Post = (props) => {
   const {
     id,
@@ -183,7 +184,7 @@ const Post = (props) => {
           )}
         </div>
       </Card.Body>
-      {reviewOpen && (
+      {/* {reviewOpen && (
         <Card.Body>
           {is_owner && currentUser && reviews.results.length === 0 ? (
             <ReviewCreateForm
@@ -203,7 +204,7 @@ const Post = (props) => {
             <span>No reviews yet</span>
           )}
         </Card.Body>
-      )}
+      )} */}
     </Card>
   );
 };

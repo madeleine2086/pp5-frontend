@@ -5,6 +5,7 @@ import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 
 import appStyles from "../../App.module.css";
+import styles from "../../styles/PostPage.module.css";
 import { useParams } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
 import Post from "./Post";
@@ -16,8 +17,11 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Asset from "../../components/Asset";
 import { fetchMoreData } from "../../utils/utils";
 import PopularProfiles from "../profiles/PopularProfiles";
+import Tooltip from "@mui/material/Tooltip";
+import { Link } from "react-router-dom";
 
 function PostPage() {
+  const [hasLoaded, setHasLoaded] = useState(false);
   const { id } = useParams();
   const [post, setPost] = useState({ results: [] });
 
@@ -30,61 +34,80 @@ function PostPage() {
   useEffect(() => {
     const handleMount = async () => {
       try {
-        const [{ data: post }, {data: comments}] = await Promise.all([
-            axiosReq.get(`/posts/${id}`),
-            axiosReq.get(`/comments/?post=${id}`),
-          ]);
+        const [{ data: post }, { data: comments }] = await Promise.all([
+          axiosReq.get(`/posts/${id}`),
+          axiosReq.get(`/comments/?post=${id}`),
+        ]);
         setPost({ results: [post] });
         setComments(comments);
-        console.log(post);
-        console.log(comments);
+        setHasLoaded(true);
       } catch (err) {
         console.log(err);
       }
     };
+    setHasLoaded(false);
+    const timer = setTimeout(() => {
+      handleMount();
+    }, 300);
 
-    handleMount();
+    return () => {
+      clearTimeout(timer);
+    };
+
   }, [id]);
 
   return (
     <Row className="h-100">
       <Col className="py-2 p-0 p-lg-2" lg={8}>
         <PopularProfiles mobile />
-
-        <Post {...post.results[0]} setPosts={setPost} postPage />
-        <Container className={appStyles.Content}>
-          {currentUser ? (
-            <CommentCreateForm
-              profile_id={currentUser.profile_id}
-              profileImage={profile_image}
-              post={id}
-              setPost={setPost}
-              setComments={setComments}
-            />
-          ) : comments.results.length ? (
-            "Comments"
-          ) : null}
-          {comments.results.length ? (
-            <InfiniteScroll
-              children={comments.results.map((comment) => (
-                <Comment
-                  key={comment.id}
-                  {...comment}
+        {hasLoaded ? (
+          <>
+            <Post {...post.results[0]} setPosts={setPost} postPage />
+            <Container className={`${appStyles.Content} ${styles.Comments}`}>
+              {currentUser ? (
+                <CommentCreateForm
+                  profile_id={currentUser.profile_id}
+                  profileImage={profile_image}
+                  post={id}
                   setPost={setPost}
                   setComments={setComments}
                 />
-              ))}
-              dataLength={comments.results.length}
-              loader={<Asset spinner />}
-              hasMore={!!comments.next}
-              next={() => fetchMoreData(comments, setComments)}
-            />
-          ) : currentUser ? (
-            <span>No comments yet, be the first to comment!</span>
-          ) : (
-            <span>No comments... yet</span>
-          )}
-        </Container>
+              ) : comments.results.length ? (
+                <h5>Comments</h5>
+              ) : null}
+              {comments.results.length ? (
+                <InfiniteScroll
+                  // eslint-disable-next-line react/no-children-prop
+                  children={comments.results.map((comment) => (
+                    <Comment
+                      key={comment.id}
+                      {...comment}
+                      setPost={setPost}
+                      setComments={setComments}
+                    />
+                  ))}
+                  dataLength={comments.results.length}
+                  loader={<Asset spinner />}
+                  hasMore={!!comments.next}
+                  next={() => fetchMoreData(comments, setComments)}
+                />
+              ) : currentUser ? (
+                <span className={styles.NoComment}>
+                  No comments yet, be the first to comment!
+                </span>
+              ) : (
+                <Tooltip title="Please login to comment!" placement="top" arrow>
+                  <Link to={"/signin"}>
+                    <span className={styles.NoComment}>No comments... yet</span>
+                  </Link>
+                </Tooltip>
+              )}
+            </Container>
+            {/* <PopularPosts mobile /> */}
+          </>
+        ) : (
+          <Asset spinner />
+        )}
       </Col>
       <Col lg={4} className="d-none d-lg-block p-0 p-lg-2">
         <PopularProfiles />
