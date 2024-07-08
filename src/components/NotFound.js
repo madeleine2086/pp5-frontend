@@ -1,5 +1,5 @@
 import React from "react";
-import NoResults from "../assets/no-results.webp";
+import NoResults from "../assets/no-results.png";
 import styles from "../styles/NotFound.module.css";
 import Asset from "./Asset";
 import { NavLink } from "react-router-dom";
