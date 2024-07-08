@@ -142,6 +142,37 @@ Deployment steps:
 
 
 ## Credits
+### Some photos used in the project are my own.
+#### Other photos used are from:
+ Pexels:
+- https://www.pexels.com/photo/white-and-grey-kitten-smelling-white-daisy-flower-1472999/
+  
+    author: Alex Bargain,
+- https://www.pexels.com/photo/tri-color-beagle-and-west-highland-white-terrier-puppies-playing-on-lawn-grass-38008/
+  
+    author: Hilary Halliwell,
+- https://www.pexels.com/photo/man-looking-out-the-window-22644812/
+  
+    author: Joseph Abati,
+- https://www.pexels.com/photo/close-up-photo-of-a-sleeping-cat-2528320/
+  
+    author: Francesco Ungaro,
+- https://www.pexels.com/photo/woman-sitting-on-top-of-building-s-edge-1755385/
+  
+    author: Oziel Gómez,
+- https://www.pexels.com/photo/woman-taking-picture-using-camera-610294/
+  
+    author: David Bartus,
+- https://www.pexels.com/photo/white-and-brown-dachshund-with-black-framed-eyeglasses-1009922/
+  
+    author: Lisa Fotios,
+- https://www.pexels.com/photo/funny-brittany-spaniel-walking-on-grassy-meadow-2184555/
+  
+    Juan Franco,
+
+Acana website: https://www.acanapetfoods.co.uk/ (photos of products from their reviews section)
+
+
 
 
 ## Acknowledgements
